@@ -14,6 +14,8 @@ def get_validCode_img(request):
     str1 = "".join(random.sample(string.ascii_letters+string.digits,4))
     for index,i in enumerate(str1,1):
         draw.text((index*50,5),i,get_random_color(),font=kumo_font)
+    print(str1)
+    request.session["valid_code_str"] = str1
 
     f=BytesIO()
     img.save(f,"png")

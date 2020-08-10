@@ -11,7 +11,7 @@ class UserInfo(AbstractUser):
     avatar = models.FileField(upload_to='avatars/', default='avatars/default.png')
     create_time = models.DateTimeField(verbose_name="创建时间",auto_now_add=True)
 
-    blog = models.ForeignKey('Blog', on_delete=models.CASCADE)
+    blog = models.ForeignKey('Blog', on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.username
@@ -57,7 +57,7 @@ class Article(models.Model):
     down_count = models.IntegerField(default=0)
 
     user = models.ForeignKey('UserInfo', on_delete=models.CASCADE, verbose_name="作者")
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category',null=True, on_delete=models.CASCADE)
     tag = models.ManyToManyField(
         to='Tag',
         through='Article2Tag',
@@ -84,8 +84,8 @@ class Article2Tag(models.Model):
 
 class ArticleUpDown(models.Model):
     nid = models.AutoField(primary_key=True)
-    user = models.ForeignKey('UserInfo', on_delete=models.CASCADE)
-    article = models.ForeignKey('Article', on_delete=models.CASCADE)
+    user = models.ForeignKey('UserInfo', null=True,on_delete=models.CASCADE)
+    article = models.ForeignKey('Article', null=True,on_delete=models.CASCADE)
     is_up = models.BooleanField(default=True)
 
     class Meta:

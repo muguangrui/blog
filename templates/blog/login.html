@@ -31,7 +31,8 @@
                         </div>
                     </div>
                 </div>
-                <input type="button" class="btn btn-success btn_login" value="登录"> <span class="error"></span>
+                <input type="button" class="btn btn-success btn_login" value="登录"> <span class="error"></span><a
+                    href="/register/" class="btn btn-info pull-right">注册</a>
             </form>
         </div>
     </div>
@@ -40,7 +41,36 @@
 <script>
     $("#valid_code_img").click(function () {
         $(this)[0].src += "?"
+    });
+
+    $(".btn_login").click(function () {
+        $.ajax({
+            url:"",
+            type:"post",
+            data: {
+                user: $("#user").val(),
+                pwd: $("#pwd").val(),
+                valid_code: $("#valid_code").val(),
+                csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+            },
+            success:function (data) {
+                console.log(data);
+                if(data.user){
+                    // 登录成功
+                    var next_url = data.next_url;
+                    location.href = next_url
+                }else{
+                    $(".error").text(data.msg).css({"color":"red","margin-left":"10px"});
+                    setTimeout(function () {
+                        $(".error").text("")
+                    },1500)
+
+                }
+            }
+        })
     })
+
+
 
 </script>
 </body>
